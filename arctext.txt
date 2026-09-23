@@ -1,0 +1,8 @@
+func check_purple() u8 {
+	PT-TI-01 > 100 => SEQONE
+	PT-GG-01 > 200 => SEQONE
+	PT-H2-03 > 300 => SEQONE
+	PT-TI-01 < -100 => SEQONE
+	PT-GG-01 < -9223372036854775807 => SEQONE
+	PT-H2-03 < -300 => SEQONE
+}
