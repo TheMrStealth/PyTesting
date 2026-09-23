@@ -1,14 +1,16 @@
 import csv
 import sys
 
-def parsePL(PLsnrs, PLupps, PLlws, seq):
+def parsePL(PLsnrs, PLupps, PLlws, seq, count):
     PLfunc = ""
-    PLfunc += "func check_purple() u8 {\n"
+    PLfunc += "func check_purple"+str(count)+"() u8 {\n"
+    lines = []
     for i, num in enumerate(PLupps):
-        PLfunc += "\t" + PLsnrs[i] + " > " + str(parseInt(num, True)) + " => " + seq + "\n"
+        lines.append("\t" + PLsnrs[i] + " > " + str(parseInt(num, True)) + " => " + seq)
     for i, num in enumerate(PLlws):
-        PLfunc += "\t" + PLsnrs[i] + " < " + str(parseInt(num, False)) + " => " + seq + "\n"
-    PLfunc += "}"
+        lines.append("\t" + PLsnrs[i] + " < " + str(parseInt(num, False)) + " => " + seq)
+    PLfunc += ",\n".join(lines)
+    PLfunc += "\n}"
     return PLfunc
 
 
@@ -40,7 +42,7 @@ with open(path, newline="") as file:
             PLupps = row[3].split("|")
             PLlws = row[4].split("|")
             seq = row[5]
-            PLfunc = parsePL(PLsnrs, PLupps, PLlws, seq)
+            PLfunc = parsePL(PLsnrs, PLupps, PLlws, seq, PLcount)
         elif (row[1]!=None and row[1]=="BLE"):
             PLstage = False
 
