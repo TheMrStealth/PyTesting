@@ -3,7 +3,7 @@ import sys
 
 def parsePL(PLsnrs, PLupps, PLlws, seq, count):
     PLfunc = ""
-    PLfunc += "func check_purple"+str(count)+"() u8 {\n"
+    PLfunc += "func check_blueline"+str(count)+"() u8 {\n"
     lines = []
     for i, num in enumerate(PLupps):
         lines.append("\t" + PLsnrs[i] + " > " + str(parseInt(num, True)) + " => " + seq)

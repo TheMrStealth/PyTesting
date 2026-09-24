@@ -1,4 +1,4 @@
-func check_purple1() u8 {
+func check_blueline1() u8 {
 	PT-TI-01 > 100 => SEQONE,
 	PT-GG-01 > 200 => SEQONE,
 	PT-H2-03 > 300 => SEQONE,
