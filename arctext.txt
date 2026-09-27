@@ -1,8 +1,11 @@
-func check_blueline1() u8 {
-	PT-TI-01 > 100 => SEQONE,
-	PT-GG-01 > 200 => SEQONE,
-	PT-H2-03 > 300 => SEQONE,
-	PT-TI-01 < -100 => SEQONE,
-	PT-GG-01 < -9223372036854775807 => SEQONE,
-	PT-H2-03 < -300 => SEQONE
+func BL1() u8 {
+	BL1_count u8 := 0
+	BL1_count += PT_TI_01 > 100
+	BL1_count += PT_GG_01 > 200
+	BL1_count += PT_H2_03 > 300
+	BL1_count += PT_TI_01 < -100
+	BL1_count += PT_GG_01 < -9223372036854775807
+	BL1_count += PT_H2_03 < -300
+	return BL1_count
 }
+
