@@ -1,11 +1,11 @@
 func BL1() u8 {
-	BL1_count u8 := 0
-	BL1_count += PT_TI_01 > 100
-	BL1_count += PT_GG_01 > 200
-	BL1_count += PT_H2_03 > 300
-	BL1_count += PT_TI_01 < -100
-	BL1_count += PT_GG_01 < -9223372036854775807
-	BL1_count += PT_H2_03 < -300
-	return BL1_count
+	is_blueline := false
+	is_blueline = PT_TI_01 > 100 or is_blueline
+	is_blueline = PT_GG_01 > 200 or is_blueline
+	is_blueline = PT_H2_03 > 300 or is_blueline
+	is_blueline = PT_TI_01 < -100 or is_blueline
+	is_blueline = PT_GG_01 < -30 or is_blueline
+	is_blueline = PT_H2_03 < -300 or is_blueline
+	return is_blueline
 }
 

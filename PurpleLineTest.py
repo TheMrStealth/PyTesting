@@ -2,40 +2,45 @@ import csv
 import sys
 
 blueline_funcs = []
+blueline_seqs = []
+seq_count = 0
+
 
 def parse_int(value, is_upper):
     if value == "NA":
-        return sys.maxsize if is_upper else -sys.maxsize
+        return 100000 if is_upper else -30
     return int(value)
 
 
-def parse_blueline(name, snrs, upprs, lwrs, seq, blueline_funcs):
+def parse_blueline(name, snrs, upprs, lwrs, seq):
+    global seq_count
+
     func = ""
     func += "func " + name + "() u8 {\n"
-    func += "\t" + name + "_count u8 := 0\n"
+    func += "\tis_blueline := false\n"
 
-    lines = []
     for i, snr in enumerate(snrs):
         snrs[i] = snr.replace("-", "_")
     for i, num in enumerate(upprs):
-        lines.append(
-            "\t" + name + "_count += " + snrs[i] + " > " + str(parse_int(num, True))
+        func += (
+            "\tis_blueline = " + snrs[i] + " > " + str(parse_int(num, True))
+            + " or is_blueline\n"
         )
     for i, num in enumerate(lwrs):
-        lines.append(
-            "\t" + name + "_count += " + snrs[i] + " < " + str(parse_int(num, False))
+        func += (
+            "\tis_blueline = " + snrs[i] + " < " + str(parse_int(num, False))
+            + " or is_blueline\n"
         )
-
-    func += "\n".join(lines) + "\n"
-    func += "\treturn " + name + "_count\n"
+    func += "\treturn is_blueline\n"
     func += "}\n\n"
 
     blueline_funcs.append(func)
+    blueline_seqs.append(seq)
+    seq_count += 1
 
 
 def main():
     path = "BLMidTest - Sheet1.csv"
-    blueline_funcs = []
 
     with open(path, newline="") as file:
         reader = csv.reader(file)
@@ -46,12 +51,11 @@ def main():
             upprs = row[2].split("|")
             lwrs = row[3].split("|")
             seq = row[4]
-            parse_blueline(name, snrs, upprs, lwrs, seq, blueline_funcs)
+            parse_blueline(name, snrs, upprs, lwrs, seq)
 
     with open("arctext.txt", "w", newline="") as f:
         f.write("".join(blueline_funcs))
 
-    # print(blueline_funcs)
     print("end")
 
 
